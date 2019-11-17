@@ -1,0 +1,9 @@
+---
+# tasks file for devops
+- name: install packages
+  yum: name={{ item }} state=installed
+  loop:
+    - tree
+    - nano
+    - git
+
