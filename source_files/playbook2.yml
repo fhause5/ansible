@@ -1,0 +1,16 @@
+---
+
+- name: shell
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Check connection
+    ping:
+
+
+
+  - name: Bootstrap a host without python2 installed
+    raw: apt-get istall python-minimal
+
+

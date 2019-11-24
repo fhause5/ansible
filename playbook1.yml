@@ -1,13 +1,41 @@
 ---
 
 - name: shell
-  hosts: all
+  hosts: "{{ hosts }}"
   become: yes
-  
+
+  vars:
+    source_folder: ./source_files
+    source_files: ./source_files/playbook2.yml
+    destin_file: /tmp
+    message: This is
+    j2_files: ./source_files/index.j2
+    nginx_ubuntu_path: /var/www/html
+
   tasks:
+  - name: ls
+    shell: ls -la /tmp
+    register: result
+
+  - debug:
+      var: result
+
+  - name: Create folder for backup
+    include: ./custom/create_backup.yml
+
   - name: Ansible date fact example
     debug:
       var=ansible_date_time.date
+
+
+  - set_fact: OS="{{ message }} {{ ansible_nodename }}"
+  - name: Get OS
+    debug:
+      var: OS
+      var: ansible_facts.ansible_all_ipv4_addresses
+
+
+
 # create env for ubuntu
   - name: Create environment varibles
     shell: |
@@ -15,9 +43,31 @@
       export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
       export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
       export AWS_DEFAULT_REGION=us-west-2
-  - name: Source env
-    shell: |
-      source /home/vagrant/env.txt && $*
-      
+#  - name: Source env
+#    shell: |
+#      source /home/vagrant/env.txt
+
   - name: Source env.txt delete
-    shell: rm -rf /home/vagrant/env.txt
+    shell: rm  -rf /home/vagrant/env.txt
+    ignore_errors: yes
+
+  - name: Restart servers
+    shell: sleep 3 && reboot now
+    async: 1
+    poll: 0
+
+  - name: Wait untill UP
+    wait_for:
+        host: "{{ inventory_hostname }}"
+        state: started
+        delay: 5
+        timeout: 45
+    delegate_to: 127.0.0.1
+
+  - name: The servers is UP
+    shell: echo The servers is UP
+
+  roles:
+    - provision
+  roles:
+    - devops

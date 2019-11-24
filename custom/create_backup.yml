@@ -1,0 +1,7 @@
+---
+
+- name: Create backup
+  file:
+    path: /tmp/backup
+    state: directory
+    mode: 0755

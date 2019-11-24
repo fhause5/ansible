@@ -2,8 +2,42 @@
 # tasks file for devops
 - name: install packages
   yum: name={{ item }} state=installed
+  when: ansible_os_family == "RedHat"
   loop:
     - tree
     - nano
     - git
+    - docker
+    - ansible
 
+- name: Start docker
+  service: name=docker state=started enabled=yes
+  notify: Restart_docker
+
+- name: install packages
+  apt: name={{ item }} state=installed
+  when: ansible_os_family != "RedHat"
+  with_items:
+    - tree
+    - nano
+    - git
+    - docker.io
+    - ansible
+    - nginx
+
+
+- name: Start docker
+  service: name=docker state=started enabled=yes
+  when: ansible_nodename == "centos"
+
+- block: # For centos
+    - name: Ansible date fact example
+      debug:
+        var=ansible_date_time.date
+  when: ansible_nodename == "centos"
+
+
+
+- name: Copy j2 into ubuntu
+  template: src=index.j2 dest={{ nginx_ubuntu_path }}/index.html mode=0555
+  when: ansible_os_family != "RedHat"

@@ -1,0 +1,14 @@
+1) start docker both
+2) env
+3) devops block
+4) parse ansible_facts.ansible_all_ipv4_addresses
+5)
+tasks:
+- name: Test connection
+  ping:
+  register: output
+  delay: 2
+  retries: 5
+  until: output.stdout.find("SUCCESS") == false
+6) failed_when
+7) vault

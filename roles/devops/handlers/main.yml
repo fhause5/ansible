@@ -1,2 +1,6 @@
 ---
 # handlers file for devops
+
+- name: Restart_docker
+  service: name=docker state=restarted
+  when: ansible_nodename == "centos"
