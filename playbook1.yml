@@ -1,8 +1,23 @@
 ---
 
-- name: Roles config
-  hosts: host1
+- name: shell
+  hosts: all
   become: yes
-
-  roles:
-    - devops
+  
+  tasks:
+  - name: Ansible date fact example
+    debug:
+      var=ansible_date_time.date
+# create env for ubuntu
+  - name: Create environment varibles
+    shell: |
+      tee -a /home/vagrant/env.txt << EOF
+      export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+      export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+      export AWS_DEFAULT_REGION=us-west-2
+  - name: Source env
+    shell: |
+      source /home/vagrant/env.txt && $*
+      
+  - name: Source env.txt delete
+    shell: rm -rf /home/vagrant/env.txt

@@ -1,2 +1,6 @@
 [centos]
-host1 = ansible_host=192.168.0.105    ansible_user=vagrant   ansible_ssh_private_key_file=/home/snap/Videos/ansible_task/ansible
+host1 = ansible_host=10.23.12.247    ansible_user=vagrant   ansible_ssh_private_key_file=/home/vagrant/ansible/ansible1
+
+
+[ubuntu]
+host2 = ansible_host=10.23.7.149    ansible_user=vagrant   ansible_ssh_private_key_file=/home/vagrant/ansible/ansible1
