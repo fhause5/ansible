@@ -1,6 +1,11 @@
 ---
 # tasks file for devops
-- name: install packages
+
+- name: Update for centos
+  shell: yum update -y
+  when: ansible_os_family == "RedHat"
+
+- name: Install packages for CENTOS
   yum: name={{ item }} state=installed
   when: ansible_os_family == "RedHat"
   loop:
@@ -9,12 +14,19 @@
     - git
     - docker
     - ansible
+    - epel-release
+    - python34-pip
+    - python34-setuptools
 
 - name: Start docker
   service: name=docker state=started enabled=yes
   notify: Restart_docker
 
-- name: install packages
+- name: Update for UBUNTU
+  shell: apt update -y
+  when: ansible_os_family != "RedHat"
+
+- name: Install packages for UBUNTU
   apt: name={{ item }} state=installed
   when: ansible_os_family != "RedHat"
   with_items:
@@ -24,7 +36,7 @@
     - docker.io
     - ansible
     - nginx
-
+    - python3-pip
 
 - name: Start docker
   service: name=docker state=started enabled=yes

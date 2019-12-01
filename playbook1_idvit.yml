@@ -11,11 +11,21 @@
     message: This is
     j2_files: ./source_files/index.j2
     nginx_ubuntu_path: /var/www/html
+  pre_tasks:
+  - debug: msg="Start pre tasks"
+
+  roles:
+  - role: provision
+  - role: devops
+    vars:
+      destin_file: /home/vagrant
 
   tasks:
   - name: ls
     shell: ls -la /tmp
     register: result
+    tags:
+    - test
 
   - debug:
       var: result
@@ -26,14 +36,16 @@
   - name: Ansible date fact example
     debug:
       var=ansible_date_time.date
-
+    tags:
+    - test
 
   - set_fact: OS="{{ message }} {{ ansible_nodename }}"
   - name: Get OS
     debug:
       var: OS
       var: ansible_facts.ansible_all_ipv4_addresses
-
+    tags:
+    - test
 
 
 # create env for ubuntu
@@ -63,11 +75,15 @@
         delay: 5
         timeout: 45
     delegate_to: 127.0.0.1
+    ignore_errors: yes
+    register: status
+
+  - debug: var=status
+
+  - debug: msg={{status is failed}}
 
   - name: The servers is UP
     shell: echo The servers is UP
 
-  roles:
-    - provision
-  roles:
-    - devops
+  post_tasks:
+  - debug: msg="SUCCESS"

@@ -1,6 +1,19 @@
 [centos]
-host1 = ansible_host=192.168.0.105    ansible_user=vagrant   ansible_ssh_private_key_file=/home/snap/Videos/ansible/ansible_key
-
+#host1 = ansible_host=192.168.0.105    ansible_user=vagrant   ansible_connection=ssh   ansible_ssh_private_key_file=/home/snap/Videos/ansible/ansible_key
+host1
 
 [ubuntu]
-host2 = ansible_host=192.168.0.103    ansible_user=vagrant   ansible_ssh_private_key_file=/home/snap/Videos/ansible/ansible_key
+#host2 = ansible_host=192.168.0.103    ansible_user=vagrant   ansible_connection=ssh   ansible_ssh_private_key_file=/home/snap/Videos/ansible/ansible_key
+host2
+
+[centos:vars]
+ansible_host=192.168.0.103
+ansible_user=vagrant
+ansible_connection=ssh
+ansible_ssh_private_key_file=/home/snap/Videos/ansible/ansible_key
+
+[ubuntu:vars]
+ansible_host=192.168.0.105
+ansible_user=vagrant
+ansible_connection=ssh
+ansible_ssh_private_key_file=/home/snap/Videos/ansible/ansible_key

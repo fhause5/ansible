@@ -1,0 +1,43 @@
+---
+
+- name: shell
+  hosts: host1
+  become: yes
+
+  vars:
+    image: nginx:latest
+    container_name: mynginxserver
+
+  tasks:
+  - name: Start docker nginx
+    command:
+      docker run -d -p 81:81 --name
+        {{ container_name }}
+        {{ image }}
+    register: mynginx
+
+  - add_host:
+      name: mynginx
+      hostname: "{{ mynginx.stdout }}"
+      ansible_connection: docker
+      srs_image: "{{ image }}"
+
+#  - name: Provision docker
+#    hosts: mynginx
+#    roles:
+#      - provision
+
+  - name: Finalize
+    hosts: mynginx
+    gather_facts: no
+
+    tasks: stop container
+    command:
+      docker stop
+      {{ hostvars['mynginx'].inventory_hostname }}
+
+  - name: Commit changes
+    command:
+      docker commit
+      -m "Provision {{ hostvars['mynginx'].src_image}}"
+      {{ hostvars['mynginx'].inventory_hostname }}:1.0

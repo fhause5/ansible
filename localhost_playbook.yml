@@ -1,0 +1,11 @@
+# localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python2
+---
+- name: Test ping on localhost
+
+  hosts: localhost
+  connection: local
+
+  tasks:
+
+  - name: Ping!
+    ping:

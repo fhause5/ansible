@@ -1,2 +1,9 @@
 ---
 # vars file for devops
+
+source_folder: ./source_files
+source_files: ./source_files/playbook2.yml
+destin_file: /tmp
+message: This is
+j2_files: ./source_files/index.j2
+nginx_ubuntu_path: /var/www/html

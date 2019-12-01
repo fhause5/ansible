@@ -1,0 +1,24 @@
+---
+
+- name: shell
+  hosts: all
+  become: yes
+
+  vars:
+    myUrl:
+      v3.6.1: 'wget https://www-us.apache.org/dist/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.tar.gz -P /tmp'
+      v3.6.3: 'wget https://www-us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz -P /tmp'
+    program_name: nginx
+
+  tasks:
+
+  - name: Versions
+    debug: var=myUrl['v3.6.3']
+  - name: Delete nginx FIX IT
+    debug: msg={{ program_name }}
+  - name: Check and use my local env (FOR AWS)
+    debug: msg={{ lookup('env', 'AWS_DEFAULT_REGION') }}
+  - name: Error handling
+    shell: echo SUCCESS
+    register: output
+    failed_when: "'SUCCESS' not in output.stdout"
