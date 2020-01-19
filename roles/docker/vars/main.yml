@@ -1,0 +1,5 @@
+---
+# vars file for docker
+
+j2_dockerfile: ./source_files/docker.j2
+dockerfile_path: /tmp

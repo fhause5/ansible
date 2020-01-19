@@ -7,7 +7,7 @@ host1
 host2
 
 [centos:vars]
-ansible_host=192.168.0.103
+ansible_host=192.168.0.102
 ansible_user=vagrant
 ansible_connection=ssh
 ansible_ssh_private_key_file=/home/snap/Videos/ansible/ansible_key

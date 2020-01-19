@@ -1,0 +1,13 @@
+---
+# tasks file for docker
+
+
+- name: Copy Dockerfile into centos
+  template: src={{ j2_dockerfile }} dest={{ dockerfile_path }} mode=0555
+  when: ansible_os_family == "RedHat"
+
+- name: Docker building
+  shell: mv /tmp/docker.j2 /tmp/Dockerfile
+
+- name: Docker building
+  shell: cd /tmp && docker build -t test .
